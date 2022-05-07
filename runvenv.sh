@@ -1,3 +1,3 @@
 #!/bin/bash
 echo "Активация виртуального окружения"
-. myvenv/bin/activate
+/home/andrey/dev/blog/myvenv/bin/activate
