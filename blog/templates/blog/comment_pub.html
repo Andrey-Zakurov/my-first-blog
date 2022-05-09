@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+        <h1>Напиши комментарий к посту</h1>
+        <form method="POST" class="comment-form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-default">Сохранить</button>
+        </form>
+{% endblock %}
+
