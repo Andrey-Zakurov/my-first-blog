@@ -12,15 +12,18 @@ def post_list(request):
     return render(request, 'blog/post_list.html', context)
 
 
-def post_detail(request,pk):
-     post = get_object_or_404(Post, pk=pk)
-     comments = Comment.objects.filter(post_id = pk)
-     return render(request, 'blog/post_detail.html', {'post': post, 'comments':comments})
+def post_detail(request, pk):
+    print(type(request), pk, type(pk))
+    post = get_object_or_404(Post, pk=pk)
+    comments = Comment.objects.filter(post_id=pk)
+    return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
 
 
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
+        # ---------------------------
+        print(post.author, '\n', post.text, '\n',)
         if form.is_valid():
             post = form.save(commit = False)
             post.author = request.user
@@ -47,18 +50,18 @@ def post_edit(request, pk):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
-def comment_post(request, pk):
-    com = get_object_or_404(Comment, pk=pk)
+def comment_post_create(request, pk):
     if request.method == "POST":
-        form = Comment_form(request.POST, instance=com)
+        form = Comment_form(request.POST)
         if form.is_valid():
             com = form.save(commit=False)
             com.author = request.user
+            com.post_id = pk
             com.published_date = timezone.now()
             com.save()
-            return redirect('post_detail', pk=com.pk)
+            return redirect('post_detail', pk=com.post_id)
     else:
-        form = Comment_form(instance=com)
+        form = Comment_form()
     return render(request, 'blog/comment_pub.html', {'form': form})
 
 

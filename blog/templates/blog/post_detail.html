@@ -14,7 +14,7 @@
                 <p>{{ post.text|linebreaksbr}}</p>
         </div>
         <div class = "comments">
-            <a class="btn btn-default" href="{% url 'comment_post' pk=post.pk %}"><span class="glyphicon glyphicon-edit"></span></a>
+            <a class="btn btn-default" href="{% url 'comment_post_create' pk=post.pk %}"><span class="glyphicon glyphicon-edit"></span></a>
             <h>Комментарии</h><br>
             <br>
             {% for  com in comments%}
