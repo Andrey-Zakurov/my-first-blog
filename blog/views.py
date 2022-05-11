@@ -1,21 +1,24 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Comment
 from django.utils import timezone
+from django import contrib
+from django.contrib import auth
+
 from .forms import PostForm, Comment_form
 
 
 
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte = timezone.now()).order_by('published_date')
+    print(*[i for i in dir(auth)], sep='\n')
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     context = {'posts':posts}
     return render(request, 'blog/post_list.html', context)
 
 
 def post_detail(request, pk):
-    print(type(request), pk, type(pk))
     post = get_object_or_404(Post, pk=pk)
-    comments = Comment.objects.filter(post_id=pk)
+    comments = Comment.objects.filter(post_id=pk).order_by('-published_date')
     return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
 
 
@@ -23,7 +26,7 @@ def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         # ---------------------------
-        print(post.author, '\n', post.text, '\n',)
+        #print(post.author, '\n', post.text, '\n',)
         if form.is_valid():
             post = form.save(commit = False)
             post.author = request.user
